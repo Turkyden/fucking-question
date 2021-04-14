@@ -1,4 +1,4 @@
-;(function() {
+function init() {
   //生成从minNum到maxNum的随机数
   function randomNum(minNum, maxNum){ 
     switch(arguments.length){ 
@@ -52,4 +52,6 @@
   runAllQuestion(document.querySelectorAll('ul.ulradiocheck'));
   randomSomeWord();
   document.querySelector('#submit_button').click();
-})()
+}
+
+module.exports

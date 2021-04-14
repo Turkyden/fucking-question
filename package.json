@@ -1,0 +1,24 @@
+{
+  "name": "fucking-question",
+  "version": "1.0.0",
+  "description": "\"# fucking-question\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Turkyden/fucking-question.git"
+  },
+  "author": "Turkyden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Turkyden/fucking-question/issues"
+  },
+  "homepage": "https://github.com/Turkyden/fucking-question#readme",
+  "dependencies": {
+    "puppeteer": "^8.0.0",
+    "puppeteer-core": "^8.0.0"
+  }
+}

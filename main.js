@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer");
-const init = require("./script.js");
 
-puppeteer.launch({ ignoreDefaultArgs: ["--enable-automation"] }).then(async (browser) => {
+async function runTask(browser) {
   const page = await browser.newPage();
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
@@ -9,10 +8,6 @@ puppeteer.launch({ ignoreDefaultArgs: ["--enable-automation"] }).then(async (bro
     });
   });
   await page.goto("https://www.wjx.cn/vj/ex2Ef6U.aspx");
-  // await page.screenshot({
-  //   path: "screenshot/1.png",
-  //   fullPage: true
-  // });
 
   await page.evaluate(() => {
     ;(function () {
@@ -61,7 +56,7 @@ puppeteer.launch({ ignoreDefaultArgs: ["--enable-automation"] }).then(async (bro
       }
 
       function randomSomeWord() {
-        const words = ['很期待参加', '希望票价低一点啦', '是在上海举办吗？', ''];
+        const words = ['很期待参加', '希望票价低一点啦', '是在上海举办吗？', '看情况', '夏天举办会很热吧？', ''];
         const randomKey = randomNum(0, words.length - 1);
         const word = words[randomKey];
         document.querySelector('textarea[name="q10"]').value = word;
@@ -73,11 +68,26 @@ puppeteer.launch({ ignoreDefaultArgs: ["--enable-automation"] }).then(async (bro
     // document.querySelector('#submit_button').click();
   });
   await page.click('#submit_button', {
-    delay: 1000
+    delay: 2000
   });
-  await page.screenshot({
-    path: `screenshot/${new Date().getTime()}.png`,
-    fullPage: true
-  });
+  console.log('Run task at: ', new Date().getTime())
+  // await page.screenshot({
+  //   path: `screenshot/${new Date().getTime()}.png`,
+  //   fullPage: true
+  // });
+}
+
+puppeteer.launch({ ignoreDefaultArgs: ["--enable-automation"] }).then(async (browser) => {
+  const totals = 5000000; // 总任务数
+  const concurrency = 5; // 并发数
+  const tasks = Array.from(Array(totals), v => runTask(browser));
+  const chunkArray = (array, size) => {
+    return Array.from(Array(Math.ceil(array.length / size)), (v, i) => array.slice(i * size, i * size + size))
+  }
+  const chunks = chunkArray(tasks, totals / concurrency);
+  for (let index = 0; index < chunks.length; index++) {
+    const chunk = chunks[index];
+    await Promise.all(chunk);
+  }
   await browser.close();
 });

@@ -1,6 +1,6 @@
 const init = require("../init");
 
 module.exports = (req, res) => {
-  await init();
+  init();
   res.send(`Success`)
 }
